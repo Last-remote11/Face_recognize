@@ -46,7 +46,7 @@ class App extends Component {
         topRow: 0,
         rightCol: 0,
         bottomRow: 0,
-      }],
+      }], // 초기값을 빈 배열로 하면 오류가 나길래..
     }
 }
   
@@ -65,18 +65,17 @@ class App extends Component {
         bottomRow: height - (clarifiFace.bottom_row * width),
       })
     }
-
     return boxArray;  
-  }
+  } // API가 보내준 결과에서 얼굴 위치를 뽑아내는 함수
 
   displayFacebox = (box) => {
     this.setState({box: box})
     console.log(this.state.box)
-  }
+  } // 위 함수에서 내놓은 결과를 state 에 저장
 
   onInputChange = (event) => {
     this.setState({input: event.target.value})
-  }
+  } // 얘는 검색창에 글자를 쓸때마다 input이라는 state를 업데이트
 
   clickDetect = () => {
     this.setState({url: this.state.input});

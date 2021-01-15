@@ -15,7 +15,7 @@ const FaceRecognation = ({ box, url }) => {
     return (
         <div className='center ma'>
             <div className='absolute mt2'>
-                <img id='inputImage' alt='result' src={url} width='500px' height='auto' ></img>
+                <img id='inputImage' alt='result' src={url} width='800px' height='auto' ></img>
                 
                 {generateMultipleBox(box)}
                 
