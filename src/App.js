@@ -6,6 +6,8 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import FaceRecognation from './components/FaceRecognation/FaceRecognation';
+import SignIn from './components/SignIn/SignIn';
+import Register from './components/Register/Register';
 import Particles from 'react-particles-js';
 
 
@@ -47,9 +49,12 @@ class App extends Component {
         rightCol: 0,
         bottomRow: 0,
       }], // 초기값을 빈 배열로 하면 오류가 나길래..
+      route: 'signin',
+      isSignedIn: false,
     }
 }
-  
+
+
   calculateFaceLocation = (data) => {
     let boxArray = []
     const image = document.getElementById('inputImage');
@@ -86,17 +91,35 @@ class App extends Component {
     .catch(err => console.log('error!', err))
   }
 
+  onRouteChange = (route) => {
+    if (route === 'signout') {
+      this.setState({isSignedIn: false})
+    } else if (route === 'home'){
+      this.setState({isSignedIn: true})
+    }
+      this.setState({route: route});
+  }
+
   render() {
     return(
       <div className='App'>
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm 
-          onInputChange={this.onInputChange}
-          clickDetect={this.clickDetect}/>
-        <FaceRecognation box={this.state.box} url={this.state.url}/>
-        <p>{this.state.result}</p>
+        <Navigation onRouteChange={this.onRouteChange} isSignedIn={this.state.isSignedIn}/>
+        { this.state.route === 'home' 
+        ? <div>
+            <Logo /> 
+            <Rank />
+            <ImageLinkForm 
+              onInputChange={this.onInputChange}
+              clickDetect={this.clickDetect}/>
+            <FaceRecognation box={this.state.box} url={this.state.url}/>
+          </div>
+        : (
+          this.state.route === 'signin'
+          ? <SignIn onRouteChange={this.onRouteChange}/> 
+          : <Register onRouteChange={this.onRouteChange}/> 
+        )
+        }
+        
         <Particles  className='particles' params={particleOptions}/>
       </div>
     )
