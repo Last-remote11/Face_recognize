@@ -11,6 +11,8 @@ const generateMultipleBox = (array) => {
 
 const FaceRecognation = ({ box, url }) => {
 
+    if (url) {
+
     return (
         <div className='center ma'>
             <div className='absolute mt2'>
@@ -20,7 +22,15 @@ const FaceRecognation = ({ box, url }) => {
                 
             </div>
         </div>
-    )
+    )} else {
+        return (
+            <div className='center ma'>
+                <div className='absolute mt2'>
+                    
+                </div>
+            </div>
+        )
+    }
 
 }
 

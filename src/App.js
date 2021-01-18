@@ -60,6 +60,8 @@ class App extends Component {
     const image = document.getElementById('inputImage');
     const width = Number(image.width);
     const height = Number(image.height);
+    console.log('width',width);
+    console.log('height',height);
 
     for (var i = 0; i < data.outputs[0].data.regions.length; i++) {
       const clarifiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
@@ -67,7 +69,7 @@ class App extends Component {
         leftCol: clarifiFace.left_col * width,
         topRow: clarifiFace.top_row * height,
         rightCol: width - (clarifiFace.right_col * width),
-        bottomRow: height - (clarifiFace.bottom_row * width),
+        bottomRow: height - (clarifiFace.bottom_row * height),
       })
     }
     return boxArray;  
@@ -114,7 +116,7 @@ class App extends Component {
             <FaceRecognation box={box} url={url}/>
           </div>
         : (
-          route === 'signin'
+          route === 'signin' || route === 'signout'
           ? <SignIn onRouteChange={this.onRouteChange}/> 
           : <Register onRouteChange={this.onRouteChange}/> 
         )
