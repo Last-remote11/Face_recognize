@@ -75,7 +75,6 @@ class App extends Component {
 
   displayFacebox = (box) => {
     this.setState({box: box})
-    console.log(this.state.box)
   } // 위 함수에서 내놓은 결과를 state 에 저장
 
   onInputChange = (event) => {
@@ -101,20 +100,21 @@ class App extends Component {
   }
 
   render() {
+    const { isSignedIn, box, url, route } = this.state;
     return(
       <div className='App'>
-        <Navigation onRouteChange={this.onRouteChange} isSignedIn={this.state.isSignedIn}/>
-        { this.state.route === 'home' 
+        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn}/>
+        { route === 'home' 
         ? <div>
             <Logo /> 
             <Rank />
             <ImageLinkForm 
               onInputChange={this.onInputChange}
               clickDetect={this.clickDetect}/>
-            <FaceRecognation box={this.state.box} url={this.state.url}/>
+            <FaceRecognation box={box} url={url}/>
           </div>
         : (
-          this.state.route === 'signin'
+          route === 'signin'
           ? <SignIn onRouteChange={this.onRouteChange}/> 
           : <Register onRouteChange={this.onRouteChange}/> 
         )
