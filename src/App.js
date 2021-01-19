@@ -38,6 +38,7 @@ const particleOptions = {
 
 class App extends Component {
 
+
   constructor() {
     super()
     this.state = {
@@ -51,9 +52,35 @@ class App extends Component {
       }], // 초기값을 빈 배열로 하면 오류가 나길래..
       route: 'signin',
       isSignedIn: false,
+      user: {
+          id: '',
+          name: '',
+          email: '',
+          entries: 0,
+          joined: ''
+      }
     }
-}
+  }
 
+
+
+  loadUser = (data) => {
+    this.setState({user: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    }})
+  }
+
+  // componentDidMount() {
+  //   fetch('http://localhost:3000/')
+  //     .then(response => response.json())
+  //     .then(console.log)
+  // } fetch 테스트
+
+  
 
   calculateFaceLocation = (data) => {
     let boxArray = []
@@ -75,22 +102,43 @@ class App extends Component {
     return boxArray;  
   } // API가 보내준 결과에서 얼굴 위치를 뽑아내는 함수
 
+
   displayFacebox = (box) => {
     this.setState({box: box})
   } // 위 함수에서 내놓은 결과를 state 에 저장
+
 
   onInputChange = (event) => {
     this.setState({input: event.target.value})
   } // 얘는 검색창에 글자를 쓸때마다 input이라는 state를 업데이트
 
-  clickDetect = () => {
+
+  onPictureSubmit = () => {
     this.setState({url: this.state.input});
     app.models.predict(
       'd02b4508df58432fbb84e800597b8959',
       this.state.input)
-    .then(response => this.displayFacebox(this.calculateFaceLocation(response))) // 커링 함수 !?
-    .catch(err => console.log('error!', err))
-  }
+    .then(response => { 
+      if (response) {
+        fetch('http://localhost:3000/image', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+          id: this.state.user.id
+        })
+      })
+      .then(res => res.json())
+      .then(count => {
+        this.setState(Object.assign(this.state.user, {entries: count}))
+        })
+      }
+      this.displayFacebox(this.calculateFaceLocation(response))  // 커링 함수 !?
+    })
+      .catch(err => console.log('error!', err))
+}
+  
+
+
 
   onRouteChange = (route) => {
     if (route === 'signout') {
@@ -101,24 +149,25 @@ class App extends Component {
       this.setState({route: route});
   }
 
+
   render() {
-    const { isSignedIn, box, url, route } = this.state;
+    const { isSignedIn, box, url, route, user} = this.state;
     return(
       <div className='App'>
         <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn}/>
         { route === 'home' 
         ? <div>
             <Logo /> 
-            <Rank />
+            <Rank name={user.name} entries={user.entries} />
             <ImageLinkForm 
               onInputChange={this.onInputChange}
-              clickDetect={this.clickDetect}/>
+              onPictureSubmit={this.onPictureSubmit}/>
             <FaceRecognation box={box} url={url}/>
           </div>
         : (
           route === 'signin' || route === 'signout'
-          ? <SignIn onRouteChange={this.onRouteChange}/> 
-          : <Register onRouteChange={this.onRouteChange}/> 
+          ? <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange}/> 
+          : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/> 
         )
         }
         
