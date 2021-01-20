@@ -72,7 +72,7 @@ class App extends Component {
       entries: data.entries,
       joined: data.joined
     }})
-  }
+  } // 로그인이 성공하면 db에 있는 정보대로 state를 맞춰줌
 
   // componentDidMount() {
   //   fetch('http://localhost:3000/')

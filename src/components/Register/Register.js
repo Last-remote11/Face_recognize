@@ -1,4 +1,5 @@
 import React from 'react'
+import bcrypt from 'bcrypt-nodejs'
 
 class Register extends React.Component {
 
@@ -31,7 +32,7 @@ class Register extends React.Component {
             body: JSON.stringify({
                 name: this.state.registerName,
                 email: this.state.registerEmail,
-                password: this.state.registerPassword
+                hash: bcrypt.hashSync(this.state.registerPassword)
             })
         })
             .then(response => response.json())
@@ -46,7 +47,7 @@ class Register extends React.Component {
 
     render () {
         return (
-            <article className="br2 ba dark-gray b--black-10 mv4 w-100 w-20-m w-25-l mw7 center shadow-3">
+            <article className="ph0 ma3 br2 ba dark-gray b--black-10 mv4 w-100 w-50-m w-30-l center shadow-3">
             <main className="pa4 black-80">
             <form className="measure">
                 <fieldset id="sign_up" className="ba b--transparent ph0 mh0">

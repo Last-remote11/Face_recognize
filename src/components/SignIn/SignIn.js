@@ -34,6 +34,8 @@ class SignIn extends React.Component  {
             if (data !== '로그인 실패') {
                 this.props.loadUser(data);
                 this.props.onRouteChange('home');
+            } else {
+                alert("로그인에 실패하였습니다. 이메일과 패스워드를 확인해주세요")
             }
         })
         
@@ -42,11 +44,11 @@ class SignIn extends React.Component  {
     render() {
         const { onRouteChange } = this.props;
         return (
-            <article className="br2 ba dark-gray b--black-10 mv4 w-100 w-20-m w-25-l mw7 center shadow-3">
+            <article className="ph0 ma3 br2 ba dark-gray b--black-10 mv4 w-100 w-50-m w-30-l center shadow-3">
             <main className="pa4 black-80">
             <form className="measure">
                 <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                <legend className="f1 fw6 ph0 mh0">Sign In</legend>
+                <legend className="f1 fw6 mh0">Sign In</legend>
                 <div className="mt3">
                     <label className="db fw6 lh-copy f6" forhtml="email-address">Email</label>
                     <input onChange={this.onEmailChange} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address" />
