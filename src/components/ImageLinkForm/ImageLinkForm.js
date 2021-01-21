@@ -5,7 +5,7 @@ const ImageLinkForm = ({ onInputChange, onPictureSubmit }) => {
     return (
         <div className="br2">
             <p className='f3 hover-purple context'>
-                {'This Magic Brain will detect faces in your picture. Git it a try.'}
+                {'Paste any image link below.  Then API will catch face in picture.  Even multiple faces & Anime picture.'}
             </p>
             <div className='center form'>
                 <div className='pa4 br3 shadow-5'>

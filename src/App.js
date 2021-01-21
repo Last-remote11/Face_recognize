@@ -1,6 +1,5 @@
 import './App.css';
 import React, { Component } from 'react';
-import Clarifai from 'clarifai';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
@@ -11,9 +10,6 @@ import Register from './components/Register/Register';
 import Particles from 'react-particles-js';
 
 
-const app = new Clarifai.App({
-  apiKey: 'c9f7a09b371a4b52b7980905d777c44b'
-})
 
 const particleOptions = {
     particles: {
@@ -36,30 +32,34 @@ const particleOptions = {
     }
   }
 
+const initialState = {
+  input: '',
+  url: '',
+  box: [{
+    leftCol: 0,
+    topRow: 0,
+    rightCol: 0,
+    bottomRow: 0,
+  }], // 초기값을 빈 배열로 하면 오류가 나길래..
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+      id: '',
+      name: '',
+      email: '',
+      entries: 0,
+      joined: ''
+  }
+}
+
+
+
 class App extends Component {
 
 
   constructor() {
     super()
-    this.state = {
-      input: '',
-      url: '',
-      box: [{
-        leftCol: 0,
-        topRow: 0,
-        rightCol: 0,
-        bottomRow: 0,
-      }], // 초기값을 빈 배열로 하면 오류가 나길래..
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-          id: '',
-          name: '',
-          email: '',
-          entries: 0,
-          joined: ''
-      }
-    }
+    this.state = initialState
   }
 
 
@@ -73,13 +73,6 @@ class App extends Component {
       joined: data.joined
     }})
   } // 로그인이 성공하면 db에 있는 정보대로 state를 맞춰줌
-
-  // componentDidMount() {
-  //   fetch('http://localhost:3000/')
-  //     .then(response => response.json())
-  //     .then(console.log)
-  // } fetch 테스트
-
   
 
   calculateFaceLocation = (data) => {
@@ -87,8 +80,6 @@ class App extends Component {
     const image = document.getElementById('inputImage');
     const width = Number(image.width);
     const height = Number(image.height);
-    console.log('width',width);
-    console.log('height',height);
 
     for (var i = 0; i < data.outputs[0].data.regions.length; i++) {
       const clarifiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
@@ -110,14 +101,20 @@ class App extends Component {
 
   onInputChange = (event) => {
     this.setState({input: event.target.value})
-  } // 얘는 검색창에 글자를 쓸때마다 input이라는 state를 업데이트
+  } // 검색창에 글자를 쓸때마다 input이라는 state를 업데이트
 
 
   onPictureSubmit = () => {
     this.setState({url: this.state.input});
-    app.models.predict(
-      'd02b4508df58432fbb84e800597b8959',
-      this.state.input)
+
+    fetch('http://localhost:3000/submit', {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+          imgUrl: this.state.url
+        })
+      })
+    .then(response => response.json())
     .then(response => { 
       if (response) {
         fetch('http://localhost:3000/image', {
@@ -127,7 +124,7 @@ class App extends Component {
           id: this.state.user.id
         })
       })
-      .then(res => res.json())
+      .then(response => response.json())
       .then(count => {
         this.setState(Object.assign(this.state.user, {entries: count}))
         })
@@ -139,10 +136,9 @@ class App extends Component {
   
 
 
-
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     } else if (route === 'home'){
       this.setState({isSignedIn: true})
     }

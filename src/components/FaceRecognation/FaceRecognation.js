@@ -2,11 +2,14 @@ import React from 'react';
 import './FaceRecognation.css';
 
 const generateMultipleBox = (array) => {
-    var l = [];
+    var boundingBoxArray = [];
     for(var i=0; i < array.length; i++) {
-    l.push(<div className='bounding-box' style={{top: array[i].topRow, right: array[i].rightCol, bottom: array[i].bottomRow, left: array[i].leftCol}}></div>)
+    boundingBoxArray.push(
+        <div className='bounding-box' 
+        style={{top: array[i].topRow, right: array[i].rightCol, bottom: array[i].bottomRow, left: array[i].leftCol}}></div>
+        )
     };
-    return l;
+    return boundingBoxArray;
 }
 
 const FaceRecognation = ({ box, url }) => {
