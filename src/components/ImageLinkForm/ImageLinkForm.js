@@ -5,7 +5,8 @@ const ImageLinkForm = ({ onInputChange, onPictureSubmit }) => {
     return (
         <div className="br2">
             <p className='f3 hover-purple context'>
-                {'Paste any image link below.  Then API will catch face in picture.  Even multiple faces & Anime picture.'}
+                {'Paste any image link below.  Then API will catch face in picture.  Even multiple faces & Anime picture.'}<br></br>
+                {'※로딩이 길어지면 한번더 눌러주세요'}
             </p>
             <div className='center form'>
                 <div className='pa4 br3 shadow-5'>
