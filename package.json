@@ -9,7 +9,6 @@
     "bcrypt-nodejs": "0.0.3",
     "clarifai": "^2.9.1",
     "gh-pages": "^3.1.0",
-    "homepage": "https://last-remote11.github.io/Face_recognize/",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-particles-js": "^3.4.1",
