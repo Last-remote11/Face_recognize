@@ -1,5 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
+import {Helmet} from "react-helmet";
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
@@ -8,7 +9,6 @@ import FaceRecognation from './components/FaceRecognation/FaceRecognation';
 import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 import Particles from 'react-particles-js';
-
 
 
 const particleOptions = {
@@ -155,6 +155,8 @@ class App extends Component {
     const { isSignedIn, box, url, route, user} = this.state;
     return(
       <div className='App'>
+        <Helmet>
+        </Helmet>
         <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn}/>
         { route === 'home' 
         ? <div>
