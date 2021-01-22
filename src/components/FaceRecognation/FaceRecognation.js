@@ -1,6 +1,7 @@
 import React from 'react';
 import './FaceRecognation.css';
 
+
 const generateMultipleBox = (array) => {
     var boundingBoxArray = [];
     for(var i=0; i < array.length; i++) {

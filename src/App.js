@@ -106,6 +106,13 @@ class App extends Component {
 
 
   onPictureSubmit = () => {
+    
+    this.setState({box: [{
+      leftCol: 0,
+      topRow: 0,
+      rightCol: 0,
+      bottomRow: 0,
+    }]})
 
     this.setState({url: this.state.input}, () => {
       fetch('https://stark-ridge-55839.herokuapp.com/submit', {

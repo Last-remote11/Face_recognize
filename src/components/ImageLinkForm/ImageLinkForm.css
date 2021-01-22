@@ -1,11 +1,13 @@
 .form {
-    width: 800px;
+    width: auto;
+    max-width: 800px;
     background-color: #023220;
     opacity: 1;
     background-image:  linear-gradient(30deg, #f4f745 12%, transparent 12.5%, transparent 87%, #f4f745 87.5%, #f4f745), linear-gradient(150deg, #f4f745 12%, transparent 12.5%, transparent 87%, #f4f745 87.5%, #f4f745), linear-gradient(30deg, #f4f745 12%, transparent 12.5%, transparent 87%, #f4f745 87.5%, #f4f745), linear-gradient(150deg, #f4f745 12%, transparent 12.5%, transparent 87%, #f4f745 87.5%, #f4f745), linear-gradient(60deg, #f4f74577 25%, transparent 25.5%, transparent 75%, #f4f74577 75%, #f4f74577), linear-gradient(60deg, #f4f74577 25%, transparent 25.5%, transparent 75%, #f4f74577 75%, #f4f74577);
     background-size: 40px 70px;
     background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
 }
+
 
 .context {
     cursor: context-menu;
