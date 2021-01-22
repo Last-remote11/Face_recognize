@@ -100,38 +100,43 @@ class App extends Component {
 
 
   onInputChange = (event) => {
-    this.setState({input: event.target.value})
+    this.setState({input: event.target.value});
+    console.log('검색창', this.state.input)
   } // 검색창에 글자를 쓸때마다 input이라는 state를 업데이트
 
 
   onPictureSubmit = () => {
-    this.setState({url: this.state.input});
 
-    fetch('https://stark-ridge-55839.herokuapp.com/submit', {
-          method: 'post',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-          imgUrl: this.state.url
-        })
+    this.setState({url: this.state.input}, () => {
+      fetch('https://stark-ridge-55839.herokuapp.com/submit', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+        imgUrl: this.state.url
       })
-    .then(response => response.json())
-    .then(response => { 
-      if (response) {
-        fetch('https://stark-ridge-55839.herokuapp.com/image', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-          id: this.state.user.id
-        })
-      })
-      .then(response => response.json())
-      .then(count => {
-        this.setState(Object.assign(this.state.user, {entries: count}))
-        })
-      }
-      this.displayFacebox(this.calculateFaceLocation(response))  // 커링 함수 !?
     })
-      .catch(err => console.log('error!', err))
+  .then(response => response.json())
+  .then(response => { 
+    if (response) {
+      fetch('https://stark-ridge-55839.herokuapp.com/image', {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+        id: this.state.user.id
+      })
+    })
+    .then(response => response.json())
+    .then(count => {
+      this.setState(Object.assign(this.state.user, {entries: count}))
+      })
+    }
+    this.displayFacebox(this.calculateFaceLocation(response))  // 커링 함수 !?
+  })
+    .catch(err => console.log('error!', err))
+    });
+
+
+
 }
   
 
