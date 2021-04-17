@@ -10,6 +10,9 @@ import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 import Particles from 'react-particles-js';
 
+import Modal from './components/Modal/Modal'
+import Profile from './components/Profile/Profile'
+
 
 const particleOptions = {
     particles: {
@@ -43,12 +46,15 @@ const initialState = {
   }], // 초기값을 빈 배열로 하면 오류가 나길래..
   route: 'signin',
   isSignedIn: false,
+  isProfileOpen: false,
   user: {
       id: '',
       name: '',
       email: '',
       entries: 0,
-      joined: ''
+      joined: '',
+      age: '',
+      pet: ''
   }
 }
 
@@ -105,6 +111,8 @@ class App extends Component {
   } // 검색창에 글자를 쓸때마다 input이라는 state를 업데이트
 
 
+
+
   onPictureSubmit = () => {
     
     this.setState({box: [{
@@ -115,7 +123,7 @@ class App extends Component {
     }]})
 
     this.setState({url: this.state.input}, () => {
-      fetch('https://stark-ridge-55839.herokuapp.com/submit', {
+      fetch('http://localhost:3000/submit', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -125,7 +133,7 @@ class App extends Component {
   .then(response => response.json())
   .then(response => { 
     if (response) {
-      fetch('https://stark-ridge-55839.herokuapp.com/image', {
+      fetch('http://localhost:3000/image', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -145,7 +153,6 @@ class App extends Component {
 
 
 }
-  
 
 
   onRouteChange = (route) => {
@@ -157,14 +164,27 @@ class App extends Component {
       this.setState({route: route});
   }
 
+  toggleModal = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isProfileOpen: !prevState.isProfileOpen
+    }))
+  }
+
 
   render() {
-    const { isSignedIn, box, url, route, user} = this.state;
+    const { isSignedIn, box, url, route, user, isProfileOpen } = this.state;
     return(
       <div className='App'>
         <Helmet>
         </Helmet>
-        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn}/>
+        <Navigation onRouteChange={this.onRouteChange} isSignedIn={isSignedIn} toggleModal={this.toggleModal}/>
+        {
+        isProfileOpen &&
+        <Modal>
+          <Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleModal} user={user} loadUser={loadUser}/>
+        </Modal> 
+        }
         { route === 'home' 
         ? <div>
             <Logo /> 

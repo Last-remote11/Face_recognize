@@ -21,7 +21,7 @@ class SignIn extends React.Component  {
         // form 의 경우 기본적으로 아무일도 없으면 새로고침하는데
         // 이것을 방지해주기 위해 preventDefault()를 써야함
         event.preventDefault()
-        fetch('https://stark-ridge-55839.herokuapp.com/signin', {
+        fetch('http://localhost:3000/signin', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -31,7 +31,8 @@ class SignIn extends React.Component  {
         })
         .then(res => res.json())
         .then(data => {
-            if (data !== '로그인 실패') {
+          console.log(data)
+            if (data.userId) {
                 this.props.loadUser(data);
                 this.props.onRouteChange('home');
             } else {
@@ -44,7 +45,7 @@ class SignIn extends React.Component  {
     render() {
         const { onRouteChange } = this.props;
         return (
-            <article className="ph0 ma3 br2 ba dark-gray b--black-10 mv4 w-100 w-50-m w-30-l center shadow-3">
+            <article className="ph0 ma3 br2 ba dark-gray b--black-10 mv4 w-50-m w-30-l center shadow-3">
             <main className="pa4 black-80">
             <form className="measure">
                 <fieldset id="sign_up" className="ba b--transparent ph0 mh0">

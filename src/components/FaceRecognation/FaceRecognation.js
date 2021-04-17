@@ -7,7 +7,8 @@ const generateMultipleBox = (array) => {
     for(var i=0; i < array.length; i++) {
     boundingBoxArray.push(
         <div key={i} className='bounding-box' 
-        style={{top: array[i].topRow, right: array[i].rightCol, bottom: array[i].bottomRow, left: array[i].leftCol}}></div>
+        style={{top: array[i].topRow, right: array[i].rightCol, bottom: array[i].bottomRow, left: array[i].leftCol}}
+        ></div>
         )
     };
     return boundingBoxArray;
