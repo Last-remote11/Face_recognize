@@ -17,6 +17,11 @@ class SignIn extends React.Component  {
         this.setState({signInPassword: event.target.value});
     }
 
+    saveAuthTokenInSession = (token) => {
+      window.sessionStorage.setItem('token', token)
+
+    }
+
     onSubmitSignIn = (event) => {
         // form 의 경우 기본적으로 아무일도 없으면 새로고침하는데
         // 이것을 방지해주기 위해 preventDefault()를 써야함
@@ -32,11 +37,12 @@ class SignIn extends React.Component  {
         .then(res => res.json())
         .then(data => {
           console.log(data)
-            if (data.userId) {
-                this.props.loadUser(data);
-                this.props.onRouteChange('home');
+            if (data.userId && data.success === 'true') {
+              this.saveAuthTokenInSession(data.token)
+              this.props.loadUser(data.user);
+              this.props.onRouteChange('home');
             } else {
-                alert("로그인에 실패하였습니다. 이메일과 패스워드를 확인해주세요")
+              alert("로그인에 실패하였습니다. 이메일과 패스워드를 확인해주세요")
             }
         })
         

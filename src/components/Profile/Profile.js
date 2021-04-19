@@ -33,7 +33,7 @@ const Profile = ({ isProfileOpen, toggleModal, user, loadUser}) => {
       
       toggleModal()
       loadUser({...user, ...submit})
-    } catch(err) {console.log}
+    } catch(err) {console.log(err)}
   }
 
   return (

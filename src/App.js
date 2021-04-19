@@ -69,6 +69,27 @@ class App extends Component {
   }
 
 
+  async componentDidMount() {
+    const token = window.sessionStorage.getItem('token')
+    if (token) {
+      try {
+        const resp = await fetch('http://localhost:3000/signin', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+        })
+        const respJson = await resp.json()
+        if (respJson && respJson.id) {
+          console.log('success')
+        }
+      } catch(err) {
+        console.log(err)
+      }
+    }
+  }
+
 
   loadUser = (data) => {
     this.setState({user: {
@@ -182,7 +203,7 @@ class App extends Component {
         {
         isProfileOpen &&
         <Modal>
-          <Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleModal} user={user} loadUser={loadUser}/>
+          <Profile isProfileOpen={isProfileOpen} toggleModal={this.toggleModal} user={user} loadUser={this.loadUser}/>
         </Modal> 
         }
         { route === 'home' 
