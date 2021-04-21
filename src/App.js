@@ -54,7 +54,8 @@ const initialState = {
       entries: 0,
       joined: '',
       age: '',
-      pet: ''
+      pet: '',
+      rank: 0
   }
 }
 
@@ -109,7 +110,7 @@ class App extends Component {
       email: data.email,
       entries: data.entries,
       joined: data.joined
-    }})
+    }},() => console.log(this.state.user))
   } // 로그인이 성공하면 db에 있는 정보대로 state를 맞춰줌
   
 
@@ -151,7 +152,6 @@ class App extends Component {
 
   onInputChange = (event) => {
     this.setState({input: event.target.value});
-    console.log('검색창', this.state.input)
   } // 검색창에 글자를 쓸때마다 input이라는 state를 업데이트
 
 
