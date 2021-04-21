@@ -1,5 +1,5 @@
 import React from 'react'
-import bcrypt from 'bcrypt-nodejs'
+import bcrypt from 'bcryptjs'
 
 class Register extends React.Component {
 
@@ -32,7 +32,7 @@ class Register extends React.Component {
             body: JSON.stringify({
                 name: this.state.registerName,
                 email: this.state.registerEmail,
-                hash: bcrypt.hashSync(this.state.registerPassword)
+                hash: bcrypt.hashSync(this.state.registerPassword, 10)
             })
         })
             .then(response => response.json())

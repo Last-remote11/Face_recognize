@@ -24,15 +24,20 @@ const Profile = ({ isProfileOpen, toggleModal, user, loadUser}) => {
   }
 
   const onProfileSubmit = async ( submit ) => {
+    const token = window.sessionStorage.getItem('token')
     try {
       const response = await fetch(`http://localhost:3000/profile/${user.id}`, {
         method: 'post',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
         body: JSON.stringify({ formInput: submit })
       })
-      
-      toggleModal()
-      loadUser({...user, ...submit})
+      if (response.status === 200 || response.status === 304) {
+        toggleModal()
+        loadUser({...user, ...submit})
+      }
     } catch(err) {console.log(err)}
   }
 

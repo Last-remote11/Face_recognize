@@ -45,7 +45,6 @@ class SignIn extends React.Component  {
               alert("로그인에 실패하였습니다. 이메일과 패스워드를 확인해주세요")
             }
         })
-        
     }
 
     render() {

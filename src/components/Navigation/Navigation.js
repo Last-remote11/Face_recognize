@@ -17,6 +17,11 @@ const Navigation = ({ onRouteChange, isSignedIn, toggleModal }) => {
     </a>
   ));
 
+  const signOutAndClearSession = () => {
+    sessionStorage.clear()
+    onRouteChange('signout')
+  }
+
     
   if (isSignedIn) {
     return(
@@ -27,7 +32,7 @@ const Navigation = ({ onRouteChange, isSignedIn, toggleModal }) => {
         </Dropdown.Toggle>
 
         <Dropdown.Menu style={{backgroundColor: 'rgba(255,255,255,0.5'}}>
-          <Dropdown.Item onClick={() => onRouteChange('signout')} style={{cursor: 'pointer'}}>Sign Out</Dropdown.Item>
+          <Dropdown.Item onClick={() => signOutAndClearSession()} style={{cursor: 'pointer'}}>Sign Out</Dropdown.Item>
           <Dropdown.Item onClick={() => toggleModal()} style={{cursor: 'pointer'}}>View Profile</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>

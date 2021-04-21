@@ -82,7 +82,18 @@ class App extends Component {
         })
         const respJson = await resp.json()
         if (respJson && respJson.id) {
-          console.log('success')
+          const profileGetRes = await fetch(`http://localhost:3000/profile/${respJson.id}`, {
+            method: 'get',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token
+            }
+          })
+          const profileGetJson = await profileGetRes.json()
+          if (profileGetJson && profileGetJson.email) {
+            this.loadUser(profileGetJson)
+            this.onRouteChange('home')
+          }
         }
       } catch(err) {
         console.log(err)
@@ -103,22 +114,34 @@ class App extends Component {
   
 
   calculateFaceLocation = (data) => {
-    let boxArray = []
-    const image = document.getElementById('inputImage');
-    const width = Number(image.width);
-    const height = Number(image.height);
+    if (data && data.outputs) {
+      let boxArray = []
+      const image = document.getElementById('inputImage');
+      const width = Number(image.width);
+      const height = Number(image.height);
+  
+      for (var i = 0; i < data.outputs[0].data.regions.length; i++) {
+        const clarifiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
+        boxArray.push({
+          leftCol: clarifiFace.left_col * width,
+          topRow: clarifiFace.top_row * height,
+          rightCol: width - (clarifiFace.right_col * width),
+          bottomRow: height - (clarifiFace.bottom_row * height),
+        })
+      }
+      return boxArray;  
+    } 
+    return [
+      {
+        leftCol:0,
+        topRow:0,
+        rightCol:0,
+        bottomRow:0
+      }
+    ]
+  }
 
-    for (var i = 0; i < data.outputs[0].data.regions.length; i++) {
-      const clarifiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
-      boxArray.push({
-        leftCol: clarifiFace.left_col * width,
-        topRow: clarifiFace.top_row * height,
-        rightCol: width - (clarifiFace.right_col * width),
-        bottomRow: height - (clarifiFace.bottom_row * height),
-      })
-    }
-    return boxArray;  
-  } // API가 보내준 결과에서 얼굴 위치를 뽑아내는 함수
+   // API가 보내준 결과에서 얼굴 위치를 뽑아내는 함수
 
 
   displayFacebox = (box) => {
@@ -135,6 +158,7 @@ class App extends Component {
 
 
   onPictureSubmit = () => {
+    const token = window.sessionStorage.getItem('token')
     
     this.setState({box: [{
       leftCol: 0,
@@ -146,7 +170,10 @@ class App extends Component {
     this.setState({url: this.state.input}, () => {
       fetch('http://localhost:3000/submit', {
         method: 'post',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
         body: JSON.stringify({
         imgUrl: this.state.url
       })
@@ -156,7 +183,10 @@ class App extends Component {
     if (response) {
       fetch('http://localhost:3000/image', {
         method: 'put',
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
         body: JSON.stringify({
         id: this.state.user.id
       })
